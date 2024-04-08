@@ -41,12 +41,12 @@
     },
     "conflict": {
         "toflar/psr6-symfony-http-cache-store": "<2.2.1",
-        "phpunit/phpunit": "<10",
         "guzzlehttp/psr7": "<2"
     },
     "suggest": {
         "friendsofsymfony/http-cache-bundle": "For integration with the Symfony framework",
-        "monolog/monolog": "For logging issues while invalidating"
+        "monolog/monolog": "For logging issues while invalidating",
+        "phpunit/phpunit": "To build tests with the WebServerSubscriber, ^10.0"
     },
     "autoload": {
         "psr-4": {
