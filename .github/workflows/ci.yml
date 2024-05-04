@@ -96,7 +96,9 @@ jobs:
           sh ${GITHUB_WORKSPACE}/.github/workflows/setup-nginx.sh
 
       - name: Install composer dependencies
+        # Lowest discovery can end up with an incompatible psr7 implementation, see discussion in https://github.com/FriendsOfSymfony/FOSHttpCache/pull/567
         run: |
+          composer require --no-update --no-interaction "guzzlehttp/psr7:2.*"
           composer update --prefer-dist --prefer-stable --prefer-lowest --no-interaction --no-progress
 
       - name: Execute tests
@@ -133,6 +135,7 @@ jobs:
 
       - name: Install composer dependencies
         run: |
+          composer require --no-update --no-interaction "guzzlehttp/psr7:2.*"
           composer update --prefer-dist --prefer-stable --prefer-lowest --no-interaction --no-progress
 
       - name: Execute tests
@@ -169,6 +172,7 @@ jobs:
 
       - name: Install composer dependencies
         run: |
+          composer require --no-update --no-interaction "guzzlehttp/psr7:2.*"
           composer update --prefer-dist --prefer-stable --prefer-lowest --no-interaction --no-progress
 
       - name: Execute tests
