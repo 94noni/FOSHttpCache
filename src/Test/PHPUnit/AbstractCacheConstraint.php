@@ -16,11 +16,9 @@ use Psr\Http\Message\ResponseInterface;
 
 abstract class AbstractCacheConstraint extends Constraint
 {
-    protected string $header;
-
-    public function __construct(string $header = 'X-Cache')
-    {
-        $this->header = $header;
+    public function __construct(
+        protected string $header = 'X-Cache',
+    ) {
     }
 
     public function matches($other): bool

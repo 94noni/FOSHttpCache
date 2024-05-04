@@ -23,23 +23,21 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class CustomTtlListener implements EventSubscriberInterface
 {
-    private string $ttlHeader;
-
-    private bool $keepTtlHeader;
-
     /**
      * Header used for backing up the s-maxage.
      */
     public const SMAXAGE_BACKUP = 'FOS-Smaxage-Backup';
 
-    /**
-     * @param string $ttlHeader     The header name that is used to specify the time to live
-     * @param bool   $keepTtlHeader Keep the custom TTL header on the response for later usage (e.g. debugging)
-     */
-    public function __construct(string $ttlHeader = 'X-Reverse-Proxy-TTL', bool $keepTtlHeader = false)
-    {
-        $this->ttlHeader = $ttlHeader;
-        $this->keepTtlHeader = $keepTtlHeader;
+    public function __construct(
+        /**
+         * The header name that is used to specify the time to live.
+         */
+        private readonly string $ttlHeader = 'X-Reverse-Proxy-TTL',
+        /**
+         * Keep the custom TTL header on the response for later usage (e.g. debugging).
+         */
+        private readonly bool $keepTtlHeader = false,
+    ) {
     }
 
     /**

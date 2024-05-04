@@ -18,14 +18,10 @@ namespace FOS\HttpCache\TagHeaderFormatter;
  */
 class CommaSeparatedTagHeaderFormatter implements TagHeaderFormatter, TagHeaderParser
 {
-    private string $headerName;
-
-    private string $glue;
-
-    public function __construct(string $headerName = TagHeaderFormatter::DEFAULT_HEADER_NAME, string $glue = ',')
-    {
-        $this->headerName = $headerName;
-        $this->glue = $glue;
+    public function __construct(
+        private readonly string $headerName = TagHeaderFormatter::DEFAULT_HEADER_NAME,
+        private readonly string $glue = ',',
+    ) {
     }
 
     public function getTagsHeaderName(): string

@@ -23,28 +23,18 @@ use Symfony\Contracts\EventDispatcher\Event as BaseEvent;
  */
 class CacheEvent extends BaseEvent
 {
-    private CacheInvalidation $kernel;
-
-    private Request $request;
-
-    private ?Response $response;
-
-    private int $requestType;
-
     /**
-     * Make sure your $kernel implements CacheInvalidationInterface.
-     *
-     * @param CacheInvalidation $kernel      the kernel raising with this event
-     * @param Request           $request     the request being processed
-     * @param Response|null     $response    the response, if available
-     * @param int               $requestType the request type (default HttpKernelInterface::MAIN_REQUEST)
+     * Make sure your $kernel implements the CacheInvalidation interface.
      */
-    public function __construct(CacheInvalidation $kernel, Request $request, ?Response $response = null, int $requestType = HttpKernelInterface::MAIN_REQUEST)
-    {
-        $this->kernel = $kernel;
-        $this->request = $request;
-        $this->response = $response;
-        $this->requestType = $requestType;
+    public function __construct(
+        /**
+         * The kernel raising this event.
+         */
+        private readonly CacheInvalidation $kernel,
+        private readonly Request $request,
+        private ?Response $response = null,
+        private readonly int $requestType = HttpKernelInterface::MAIN_REQUEST,
+    ) {
     }
 
     /**

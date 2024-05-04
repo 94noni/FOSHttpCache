@@ -28,18 +28,16 @@ class HttpClient
      */
     private ClientInterface $httpClient;
 
-    private string $hostname;
-
-    private string $port;
-
-    /**
-     * @param string $hostname Default hostname if not specified in the URL
-     * @param string $port     Default port if not specified in the URL
-     */
-    public function __construct(string $hostname, string $port)
-    {
-        $this->hostname = $hostname;
-        $this->port = $port;
+    public function __construct(
+        /**
+         * Default hostname if not specified in the URL.
+         */
+        private readonly string $hostname,
+        /**
+         * Default port if not specified in the URL.
+         */
+        private readonly string $port,
+    ) {
     }
 
     /**

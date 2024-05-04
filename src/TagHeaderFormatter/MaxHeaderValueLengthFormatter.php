@@ -23,20 +23,16 @@ use FOS\HttpCache\Exception\InvalidTagException;
  */
 class MaxHeaderValueLengthFormatter implements TagHeaderFormatter, TagHeaderParser
 {
-    private TagHeaderFormatter $inner;
-
-    private int $maxHeaderValueLength;
-
     /**
      * The default value of the maximum header length is 4096 because most
      * servers limit header values to 4kb.
      * HTTP messages cannot carry characters outside the ISO-8859-1 standard so they all
      * use up just one byte.
      */
-    public function __construct(TagHeaderFormatter $inner, int $maxHeaderValueLength = 4096)
-    {
-        $this->inner = $inner;
-        $this->maxHeaderValueLength = $maxHeaderValueLength;
+    public function __construct(
+        private readonly TagHeaderFormatter $inner,
+        private readonly int $maxHeaderValueLength = 4096,
+    ) {
     }
 
     public function getTagsHeaderName(): string
