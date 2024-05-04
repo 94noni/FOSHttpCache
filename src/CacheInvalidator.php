@@ -61,13 +61,11 @@ class CacheInvalidator
      */
     public const CLEAR = 'clear';
 
-    private ProxyClient $cache;
-
     private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(ProxyClient $cache)
-    {
-        $this->cache = $cache;
+    public function __construct(
+        private readonly ProxyClient $cache,
+    ) {
     }
 
     /**

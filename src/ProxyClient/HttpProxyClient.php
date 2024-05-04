@@ -25,11 +25,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 abstract class HttpProxyClient implements ProxyClient
 {
-    /**
-     * Dispatcher for invalidation HTTP requests.
-     */
-    private Dispatcher $httpDispatcher;
-
     private RequestFactoryInterface $requestFactory;
     private StreamFactoryInterface $streamFactory;
 
@@ -43,7 +38,7 @@ abstract class HttpProxyClient implements ProxyClient
     /**
      * The base class has no options.
      *
-     * @param Dispatcher                   $dispatcher     Helper to send instructions to the caching proxy
+     * @param Dispatcher                   $httpDispatcher Helper to send instructions to the caching proxy
      * @param array                        $options        Options for this client
      * @param RequestFactoryInterface|null $requestFactory Factory for PSR-7 messages. If none supplied,
      *                                                     a default one is created
@@ -51,12 +46,11 @@ abstract class HttpProxyClient implements ProxyClient
      *                                                     a default one is created
      */
     public function __construct(
-        Dispatcher $dispatcher,
+        private readonly Dispatcher $httpDispatcher,
         array $options = [],
         ?RequestFactoryInterface $requestFactory = null,
         ?StreamFactoryInterface $streamFactory = null,
     ) {
-        $this->httpDispatcher = $dispatcher;
         $this->options = $this->configureOptions()->resolve($options);
         $this->requestFactory = $requestFactory ?: Psr17FactoryDiscovery::findRequestFactory();
         $this->streamFactory = $streamFactory ?: Psr17FactoryDiscovery::findStreamFactory();

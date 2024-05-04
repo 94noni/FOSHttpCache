@@ -32,16 +32,14 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  */
 class KernelDispatcher implements Dispatcher
 {
-    private HttpCacheProvider $httpCacheProvider;
-
     /**
      * @var Request[]
      */
     private array $queue = [];
 
-    public function __construct(HttpCacheProvider $httpCacheProvider)
-    {
-        $this->httpCacheProvider = $httpCacheProvider;
+    public function __construct(
+        private readonly HttpCacheProvider $httpCacheProvider,
+    ) {
     }
 
     public function invalidate(RequestInterface $invalidationRequest, bool $validateHost = true): void
