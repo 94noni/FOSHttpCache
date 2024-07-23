@@ -130,6 +130,16 @@ trait EventDispatchingHttpCache
         return parent::invalidate($request, $catch);
     }
 
+    protected function forward(Request $request, bool $catch = false, ?Response $entry = null): Response
+    {
+        // do not abort early, if $entry is set this is a validation request
+        $this->dispatch(Events::PRE_FORWARD, $request, $entry);
+
+        $response = parent::forward($request, $catch, $entry);
+
+        return $this->dispatch(Events::POST_FORWARD, $request, $response);
+    }
+
     /**
      * Dispatch an event if there are any listeners.
      *

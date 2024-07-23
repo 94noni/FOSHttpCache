@@ -78,10 +78,9 @@ class CustomTtlListener implements EventSubscriberInterface
             : 'false'
         ;
         $response->headers->set(static::SMAXAGE_BACKUP, $backup);
-        $response->setTtl(
-            $response->headers->has($this->ttlHeader)
-                ? $response->headers->get($this->ttlHeader)
-                : 0
+        $response->headers->addCacheControlDirective(
+            's-maxage',
+            $response->headers->get($this->ttlHeader, 0)
         );
     }
 
@@ -111,7 +110,7 @@ class CustomTtlListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            Events::PRE_STORE => 'useCustomTtl',
+            Events::POST_FORWARD => 'useCustomTtl',
             Events::POST_HANDLE => 'cleanResponse',
         ];
     }
