@@ -3,23 +3,23 @@ Changelog
 
 See also the [GitHub releases page](https://github.com/FriendsOfSymfony/FOSHttpCache/releases).
 
-2.16
-----
+2.16.0
+------
 
 ### Symfony HttpCache
 
 * Add events `PRE_FORWARD` and `POST_FORWARD` to allow event listeners to alter
   the request before and after it is sent to the backend.
 * Changed CustomTtlListener to use the `POST_FORWARD` event instead of
-  `PRE_STORE`. Using PRE_STORE, requests that are not considered cacheable by
+  `PRE_STORE`. Using `PRE_STORE`, requests that are not considered cacheable by
   Symfony were never cached, even when they had a custom TTL header.
 * Add flag `fallbackToSmaxage` to `CustomTtlListener` to allow controlling
-  fallback to s-maxage if custom TTL header is not defined on the response.
+  fallback to `s-maxage` if custom TTL header is not defined on the response.
 * Fix: Do not call store if Response object is not longer cacheable after event
   listeners. If you use the custom TTL system, this is only a performance
   improvement, because the TTL of the response would still be 0. With a custom
   listener that changes the response explicitly to not be cached but does not
-  change s-maxage, this bug might have led to caching responses that should not
+  change `s-maxage`, this bug might have led to caching responses that should not
   have been cached.
 
 2.15.3
