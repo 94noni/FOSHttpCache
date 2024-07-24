@@ -37,6 +37,10 @@ class CustomTtlListener implements EventSubscriberInterface
          * Keep the custom TTL header on the response for later usage (e.g. debugging).
          */
         private readonly bool $keepTtlHeader = false,
+        /**
+         * If the custom TTL header is not set, should s-maxage be used?
+         */
+        private readonly bool $fallbackToSmaxage = true,
     ) {
     }
 
@@ -52,15 +56,22 @@ class CustomTtlListener implements EventSubscriberInterface
         if (!$response) {
             return;
         }
-        if (!$response->headers->has($this->ttlHeader)) {
+
+        if (!$response->headers->has($this->ttlHeader)
+            && true === $this->fallbackToSmaxage
+        ) {
             return;
         }
+
         $backup = $response->headers->hasCacheControlDirective('s-maxage')
             ? $response->headers->getCacheControlDirective('s-maxage')
             : 'false'
         ;
         $response->headers->set(static::SMAXAGE_BACKUP, $backup);
-        $response->setTtl($response->headers->get($this->ttlHeader));
+        $response->headers->addCacheControlDirective(
+            's-maxage',
+            $response->headers->get($this->ttlHeader, 0)
+        );
     }
 
     /**
@@ -69,12 +80,8 @@ class CustomTtlListener implements EventSubscriberInterface
     public function cleanResponse(CacheEvent $e): void
     {
         $response = $e->getResponse();
+
         if (!$response) {
-            return;
-        }
-        if (!$response->headers->has($this->ttlHeader)
-            && !$response->headers->has(static::SMAXAGE_BACKUP)
-        ) {
             return;
         }
 
@@ -85,18 +92,19 @@ class CustomTtlListener implements EventSubscriberInterface
             } else {
                 $response->headers->addCacheControlDirective('s-maxage', $smaxage);
             }
+
+            $response->headers->remove(static::SMAXAGE_BACKUP);
         }
 
         if (!$this->keepTtlHeader) {
             $response->headers->remove($this->ttlHeader);
         }
-        $response->headers->remove(static::SMAXAGE_BACKUP);
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            Events::PRE_STORE => 'useCustomTtl',
+            Events::POST_FORWARD => 'useCustomTtl',
             Events::POST_HANDLE => 'cleanResponse',
         ];
     }
