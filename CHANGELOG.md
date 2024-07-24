@@ -3,6 +3,9 @@ Changelog
 
 See also the [GitHub releases page](https://github.com/FriendsOfSymfony/FOSHttpCache/releases).
 
+2.x
+===
+
 2.16.0
 ------
 
