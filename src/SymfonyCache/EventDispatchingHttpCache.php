@@ -99,7 +99,11 @@ trait EventDispatchingHttpCache
     {
         $response = $this->dispatch(Events::PRE_STORE, $request, $response);
 
-        parent::store($request, $response);
+        // CustomTtlListener or other Listener or Subscribers might have changed the response to become non-cacheable, revalidate.
+        // Only call store for a cacheable response like Symfony core does: https://github.com/symfony/symfony/blob/v7.1.2/src/Symfony/Component/HttpKernel/HttpCache/HttpCache.php#L409
+        if ($response->isCacheable()) {
+            parent::store($request, $response);
+        }
     }
 
     /**
@@ -114,6 +118,16 @@ trait EventDispatchingHttpCache
         }
 
         return parent::invalidate($request, $catch);
+    }
+
+    protected function forward(Request $request, bool $catch = false, ?Response $entry = null): Response
+    {
+        // do not abort early, if $entry is set this is a validation request
+        $this->dispatch(Events::PRE_FORWARD, $request, $entry);
+
+        $response = parent::forward($request, $catch, $entry);
+
+        return $this->dispatch(Events::POST_FORWARD, $request, $response);
     }
 
     /**

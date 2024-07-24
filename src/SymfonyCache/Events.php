@@ -20,6 +20,10 @@ final class Events
 
     public const POST_HANDLE = 'fos_http_cache.post_handle';
 
+    public const PRE_FORWARD = 'fos_http_cache.pre_forward';
+
+    public const POST_FORWARD = 'fos_http_cache.post_forward';
+
     public const PRE_INVALIDATE = 'fos_http_cache.pre_invalidate';
 
     public const PRE_STORE = 'fos_http_cache.pre_store';

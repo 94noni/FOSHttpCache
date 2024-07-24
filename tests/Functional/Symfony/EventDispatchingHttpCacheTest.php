@@ -42,13 +42,14 @@ class EventDispatchingHttpCacheTest extends TestCase
 
         $httpKernel = \Mockery::mock(HttpKernelInterface::class)
             ->shouldReceive('handle')
-            ->withArgs([$request, HttpKernelInterface::MAIN_REQUEST, true])
             ->andReturn($expectedResponse)
             ->getMock();
         $store = \Mockery::mock(StoreInterface::class)
+            ->shouldReceive('lookup')->andReturn(null)->times(1)
+            ->shouldReceive('write')->times(1)
+            ->shouldReceive('unlock')->times(1)
             // need to declare the cleanup function explicitly to avoid issue between register_shutdown_function and mockery
-            ->shouldReceive('cleanup')
-            ->atMost(1)
+            ->shouldReceive('cleanup')->atMost(1)
             ->getMock();
         $kernel = new AppCache($httpKernel, $store);
         $kernel->addSubscriber(new CustomTtlListener());
