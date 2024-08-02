@@ -40,6 +40,14 @@ See also the [GitHub releases page](https://github.com/FriendsOfSymfony/FOSHttpC
 2.x
 ===
 
+2.16.1
+------
+
+### Fixed
+
+* The new `EventDispatchingHttpCache::forward` method added in 2.16.0 was not
+  compatible with Symfony 4.4. Adjusted the signature to make it compatible.
+
 2.16.0
 ------
 
