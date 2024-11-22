@@ -477,7 +477,7 @@ To enable this feature, add the following to ``your_varnish.vcl``:
 
 .. _ACL: https://www.varnish-cache.org/docs/4.0/users-guide/vcl-example-acls.html
 .. _ACL for Varnish 3: https://www.varnish-cache.org/docs/3.0/tutorial/vcl.html#example-3-acls
-.. _directory of FOSHttpCache: https://github.com/FriendsOfSymfony/FOSHttpCache/tree/2.x/resources/config
+.. _directory of FOSHttpCache: https://github.com/FriendsOfSymfony/FOSHttpCache/tree/3.x/resources/config
 .. _handling PURGE requests: https://www.varnish-cache.org/docs/4.0/users-guide/purging.html#bans
 .. _purging for Varnish 3: https://www.varnish-cache.org/docs/3.0/tutorial/purging.html
 .. _forcing a refresh: https://www.varnish-cache.org/docs/4.0/users-guide/purging.html#forcing-a-cache-miss
